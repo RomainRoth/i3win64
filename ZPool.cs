@@ -77,6 +77,7 @@ namespace i3win64
         private void buttonBind_Click(object sender, EventArgs e)
         {
             PInvokeDb.SetParent((IntPtr)listBoxWindows.SelectedItem, zScreen.panel1.Handle);
+
             // WindowStyleEx redefining
             /*uint windowStyleEx = PInvokeDb.GetWindowLongPtr((IntPtr)listBoxWindows.SelectedItem,
                 (int)PInvokeDb.WindowLongFlags.GWL_EXSTYLE);
@@ -99,13 +100,17 @@ namespace i3win64
                     case PInvokeDb.WindowStyles.WS_CAPTION:
                     case PInvokeDb.WindowStyles.WS_SYSMENU:
                     case PInvokeDb.WindowStyles.WS_SIZEFRAME:
+                    case PInvokeDb.WindowStyles.WS_DLGFRAME:
+                    case PInvokeDb.WindowStyles.WS_BORDER:
+                    case PInvokeDb.WindowStyles.WS_OVERLAPPEDWINDOW:
+                    case PInvokeDb.WindowStyles.WS_POPUPWINDOW:
                         break;
                     default:
                         if ((windowStyle & ((uint)ws)) != 0u) newWindowStyle = newWindowStyle | (uint)ws;
                         break;
                 }
             }
-            newWindowStyle = newWindowStyle | (uint)PInvokeDb.WindowStyles.WS_POPUP;
+            //newWindowStyle = newWindowStyle | (uint)PInvokeDb.WindowStyles.WS_POPUP;
             PInvokeDb.SetWindowLongPtr((IntPtr)listBoxWindows.SelectedItem,
                 (int)PInvokeDb.WindowLongFlags.GWL_STYLE,
                 (IntPtr)newWindowStyle
@@ -119,13 +124,16 @@ namespace i3win64
                 switch (wse)
                 {
                     case PInvokeDb.WindowStylesEx.WS_EX_APPWINDOW:
+                    case PInvokeDb.WindowStylesEx.WS_EX_WINDOWEDGE:
+                    case PInvokeDb.WindowStylesEx.WS_EX_CLIENTEDGE:
+                    case PInvokeDb.WindowStylesEx.WS_EX_OVERLAPPEDWINDOW:
                         break;
                     default:
                         if ((windowStyleEx & ((uint)wse)) != 0u) newWindowStyleEx = newWindowStyleEx | (uint)wse;
                         break;
                 }
             }
-            newWindowStyleEx = newWindowStyleEx | (uint)PInvokeDb.WindowStylesEx.WS_EX_TOOLWINDOW;
+            //newWindowStyleEx = newWindowStyleEx | (uint)PInvokeDb.WindowStylesEx.WS_EX_TOOLWINDOW;
             PInvokeDb.SetWindowLongPtr((IntPtr)listBoxWindows.SelectedItem,
                 (int)PInvokeDb.WindowLongFlags.GWL_EXSTYLE,
                 (IntPtr)newWindowStyleEx
@@ -191,6 +199,21 @@ namespace i3win64
             StringBuilder classn = new StringBuilder(256);
             PInvokeDb.GetClassName(wHdl, classn, 256 + 1);
             tbClassName.Text = classn.ToString();
+
+            uint windowStyle = PInvokeDb.GetWindowLongPtr((IntPtr)listBoxWindows.SelectedItem,
+                (int)PInvokeDb.WindowLongFlags.GWL_STYLE);
+            rtbWS.Text = "";
+            foreach (PInvokeDb.WindowStyles ws in (PInvokeDb.WindowStyles[])Enum.GetValues(typeof(PInvokeDb.WindowStyles)))
+            {
+                if ((windowStyle & ((uint)ws)) != 0u)  rtbWS.AppendText(ws.ToString() + Environment.NewLine);
+            }
+            uint windowStyleEx = PInvokeDb.GetWindowLongPtr((IntPtr)listBoxWindows.SelectedItem,
+                (int)PInvokeDb.WindowLongFlags.GWL_EXSTYLE);
+            rtbWS_EX.Text = "";
+            foreach (PInvokeDb.WindowStylesEx wse in (PInvokeDb.WindowStylesEx[])Enum.GetValues(typeof(PInvokeDb.WindowStylesEx)))
+            {
+                if ((windowStyleEx & ((uint)wse)) != 0u) rtbWS_EX.AppendText(wse.ToString() + Environment.NewLine);
+            }
         }
 
         private void ZPool_KeyPress(object sender, KeyPressEventArgs e)

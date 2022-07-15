@@ -8,7 +8,8 @@ namespace i3win64
         [STAThread]
         public static void Main()
         {
-            ApplicationConfiguration.Initialize();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new ZPool());
         }
     }

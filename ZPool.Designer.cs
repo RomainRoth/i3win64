@@ -49,6 +49,10 @@
             this.groupBoxProcesses = new System.Windows.Forms.GroupBox();
             this.listBoxProcesses = new System.Windows.Forms.ListBox();
             this.buttonRefreshProcesses = new System.Windows.Forms.Button();
+            this.rtbWS = new System.Windows.Forms.RichTextBox();
+            this.rtbWS_EX = new System.Windows.Forms.RichTextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabDebug.SuspendLayout();
             this.groupBoxWindows.SuspendLayout();
@@ -97,6 +101,10 @@
             // 
             // panelWindow
             // 
+            this.panelWindow.Controls.Add(this.label7);
+            this.panelWindow.Controls.Add(this.label6);
+            this.panelWindow.Controls.Add(this.rtbWS_EX);
+            this.panelWindow.Controls.Add(this.rtbWS);
             this.panelWindow.Controls.Add(this.label5);
             this.panelWindow.Controls.Add(this.tbClassName);
             this.panelWindow.Controls.Add(this.buttonBind);
@@ -134,7 +142,7 @@
             // 
             // buttonBind
             // 
-            this.buttonBind.Location = new System.Drawing.Point(6, 175);
+            this.buttonBind.Location = new System.Drawing.Point(103, 368);
             this.buttonBind.Name = "buttonBind";
             this.buttonBind.Size = new System.Drawing.Size(197, 23);
             this.buttonBind.TabIndex = 8;
@@ -259,6 +267,40 @@
             this.buttonRefreshProcesses.UseVisualStyleBackColor = true;
             this.buttonRefreshProcesses.Click += new System.EventHandler(this.buttonRefreshProcesses_Click);
             // 
+            // rtbWS
+            // 
+            this.rtbWS.Location = new System.Drawing.Point(103, 148);
+            this.rtbWS.Name = "rtbWS";
+            this.rtbWS.Size = new System.Drawing.Size(270, 106);
+            this.rtbWS.TabIndex = 11;
+            this.rtbWS.Text = "";
+            // 
+            // rtbWS_EX
+            // 
+            this.rtbWS_EX.Location = new System.Drawing.Point(103, 256);
+            this.rtbWS_EX.Name = "rtbWS_EX";
+            this.rtbWS_EX.Size = new System.Drawing.Size(270, 106);
+            this.rtbWS_EX.TabIndex = 12;
+            this.rtbWS_EX.Text = "";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 151);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(24, 15);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "WS";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 259);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(42, 15);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "WS_EX";
+            // 
             // ZPool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -302,5 +344,9 @@
         private System.Windows.Forms.Button buttonRefreshProcesses;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbClassName;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.RichTextBox rtbWS_EX;
+        private System.Windows.Forms.RichTextBox rtbWS;
     }
 }
