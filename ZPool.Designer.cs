@@ -34,6 +34,12 @@
             this.tabDebug = new System.Windows.Forms.TabPage();
             this.groupBoxWindows = new System.Windows.Forms.GroupBox();
             this.panelWindow = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tbMainWindow = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.rtbWS_EX = new System.Windows.Forms.RichTextBox();
+            this.rtbWS = new System.Windows.Forms.RichTextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tbClassName = new System.Windows.Forms.TextBox();
             this.buttonBind = new System.Windows.Forms.Button();
@@ -49,10 +55,6 @@
             this.groupBoxProcesses = new System.Windows.Forms.GroupBox();
             this.listBoxProcesses = new System.Windows.Forms.ListBox();
             this.buttonRefreshProcesses = new System.Windows.Forms.Button();
-            this.rtbWS = new System.Windows.Forms.RichTextBox();
-            this.rtbWS_EX = new System.Windows.Forms.RichTextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabDebug.SuspendLayout();
             this.groupBoxWindows.SuspendLayout();
@@ -72,7 +74,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(800, 450);
+            this.tabControl.Size = new System.Drawing.Size(1180, 631);
             this.tabControl.TabIndex = 0;
             // 
             // tabDebug
@@ -82,7 +84,7 @@
             this.tabDebug.Location = new System.Drawing.Point(4, 24);
             this.tabDebug.Name = "tabDebug";
             this.tabDebug.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDebug.Size = new System.Drawing.Size(792, 422);
+            this.tabDebug.Size = new System.Drawing.Size(1172, 603);
             this.tabDebug.TabIndex = 0;
             this.tabDebug.Text = "Debug";
             this.tabDebug.UseVisualStyleBackColor = true;
@@ -94,13 +96,15 @@
             this.groupBoxWindows.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxWindows.Location = new System.Drawing.Point(203, 3);
             this.groupBoxWindows.Name = "groupBoxWindows";
-            this.groupBoxWindows.Size = new System.Drawing.Size(586, 416);
+            this.groupBoxWindows.Size = new System.Drawing.Size(966, 597);
             this.groupBoxWindows.TabIndex = 1;
             this.groupBoxWindows.TabStop = false;
             this.groupBoxWindows.Text = "Process Windows";
             // 
             // panelWindow
             // 
+            this.panelWindow.Controls.Add(this.label8);
+            this.panelWindow.Controls.Add(this.tbMainWindow);
             this.panelWindow.Controls.Add(this.label7);
             this.panelWindow.Controls.Add(this.label6);
             this.panelWindow.Controls.Add(this.rtbWS_EX);
@@ -119,13 +123,65 @@
             this.panelWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelWindow.Location = new System.Drawing.Point(207, 19);
             this.panelWindow.Name = "panelWindow";
-            this.panelWindow.Size = new System.Drawing.Size(376, 394);
+            this.panelWindow.Size = new System.Drawing.Size(756, 575);
             this.panelWindow.TabIndex = 1;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 122);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(78, 15);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "MainWindow";
+            // 
+            // tbMainWindow
+            // 
+            this.tbMainWindow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbMainWindow.Location = new System.Drawing.Point(103, 119);
+            this.tbMainWindow.Name = "tbMainWindow";
+            this.tbMainWindow.Size = new System.Drawing.Size(650, 23);
+            this.tbMainWindow.TabIndex = 15;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(369, 188);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(42, 15);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "WS_EX";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 185);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(24, 15);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "WS";
+            // 
+            // rtbWS_EX
+            // 
+            this.rtbWS_EX.Location = new System.Drawing.Point(483, 185);
+            this.rtbWS_EX.Name = "rtbWS_EX";
+            this.rtbWS_EX.Size = new System.Drawing.Size(270, 358);
+            this.rtbWS_EX.TabIndex = 12;
+            this.rtbWS_EX.Text = "";
+            // 
+            // rtbWS
+            // 
+            this.rtbWS.Location = new System.Drawing.Point(93, 185);
+            this.rtbWS.Name = "rtbWS";
+            this.rtbWS.Size = new System.Drawing.Size(270, 358);
+            this.rtbWS.TabIndex = 11;
+            this.rtbWS.Text = "";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 122);
+            this.label5.Location = new System.Drawing.Point(6, 151);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(69, 15);
             this.label5.TabIndex = 10;
@@ -135,14 +191,14 @@
             // 
             this.tbClassName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbClassName.Location = new System.Drawing.Point(103, 119);
+            this.tbClassName.Location = new System.Drawing.Point(103, 148);
             this.tbClassName.Name = "tbClassName";
-            this.tbClassName.Size = new System.Drawing.Size(270, 23);
+            this.tbClassName.Size = new System.Drawing.Size(650, 23);
             this.tbClassName.TabIndex = 9;
             // 
             // buttonBind
             // 
-            this.buttonBind.Location = new System.Drawing.Point(103, 368);
+            this.buttonBind.Location = new System.Drawing.Point(103, 549);
             this.buttonBind.Name = "buttonBind";
             this.buttonBind.Size = new System.Drawing.Size(197, 23);
             this.buttonBind.TabIndex = 8;
@@ -183,7 +239,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbWindowID.Location = new System.Drawing.Point(103, 90);
             this.tbWindowID.Name = "tbWindowID";
-            this.tbWindowID.Size = new System.Drawing.Size(270, 23);
+            this.tbWindowID.Size = new System.Drawing.Size(650, 23);
             this.tbWindowID.TabIndex = 4;
             // 
             // tbWindowName
@@ -192,7 +248,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbWindowName.Location = new System.Drawing.Point(103, 61);
             this.tbWindowName.Name = "tbWindowName";
-            this.tbWindowName.Size = new System.Drawing.Size(270, 23);
+            this.tbWindowName.Size = new System.Drawing.Size(650, 23);
             this.tbWindowName.TabIndex = 3;
             // 
             // tbProcessID
@@ -201,7 +257,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbProcessID.Location = new System.Drawing.Point(103, 32);
             this.tbProcessID.Name = "tbProcessID";
-            this.tbProcessID.Size = new System.Drawing.Size(270, 23);
+            this.tbProcessID.Size = new System.Drawing.Size(650, 23);
             this.tbProcessID.TabIndex = 2;
             // 
             // tbProcessName
@@ -210,7 +266,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbProcessName.Location = new System.Drawing.Point(103, 3);
             this.tbProcessName.Name = "tbProcessName";
-            this.tbProcessName.Size = new System.Drawing.Size(270, 23);
+            this.tbProcessName.Size = new System.Drawing.Size(650, 23);
             this.tbProcessName.TabIndex = 1;
             // 
             // label1
@@ -229,7 +285,7 @@
             this.listBoxWindows.ItemHeight = 15;
             this.listBoxWindows.Location = new System.Drawing.Point(3, 19);
             this.listBoxWindows.Name = "listBoxWindows";
-            this.listBoxWindows.Size = new System.Drawing.Size(204, 394);
+            this.listBoxWindows.Size = new System.Drawing.Size(204, 575);
             this.listBoxWindows.TabIndex = 0;
             this.listBoxWindows.SelectedIndexChanged += new System.EventHandler(this.listBoxWindows_SelectedIndexChanged);
             // 
@@ -240,7 +296,7 @@
             this.groupBoxProcesses.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBoxProcesses.Location = new System.Drawing.Point(3, 3);
             this.groupBoxProcesses.Name = "groupBoxProcesses";
-            this.groupBoxProcesses.Size = new System.Drawing.Size(200, 416);
+            this.groupBoxProcesses.Size = new System.Drawing.Size(200, 597);
             this.groupBoxProcesses.TabIndex = 0;
             this.groupBoxProcesses.TabStop = false;
             this.groupBoxProcesses.Text = "Processes";
@@ -252,7 +308,7 @@
             this.listBoxProcesses.ItemHeight = 15;
             this.listBoxProcesses.Location = new System.Drawing.Point(3, 42);
             this.listBoxProcesses.Name = "listBoxProcesses";
-            this.listBoxProcesses.Size = new System.Drawing.Size(194, 371);
+            this.listBoxProcesses.Size = new System.Drawing.Size(194, 552);
             this.listBoxProcesses.TabIndex = 1;
             this.listBoxProcesses.SelectedIndexChanged += new System.EventHandler(this.listBoxProcesses_SelectedIndexChanged);
             // 
@@ -267,45 +323,11 @@
             this.buttonRefreshProcesses.UseVisualStyleBackColor = true;
             this.buttonRefreshProcesses.Click += new System.EventHandler(this.buttonRefreshProcesses_Click);
             // 
-            // rtbWS
-            // 
-            this.rtbWS.Location = new System.Drawing.Point(103, 148);
-            this.rtbWS.Name = "rtbWS";
-            this.rtbWS.Size = new System.Drawing.Size(270, 106);
-            this.rtbWS.TabIndex = 11;
-            this.rtbWS.Text = "";
-            // 
-            // rtbWS_EX
-            // 
-            this.rtbWS_EX.Location = new System.Drawing.Point(103, 256);
-            this.rtbWS_EX.Name = "rtbWS_EX";
-            this.rtbWS_EX.Size = new System.Drawing.Size(270, 106);
-            this.rtbWS_EX.TabIndex = 12;
-            this.rtbWS_EX.Text = "";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 151);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(24, 15);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "WS";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 259);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(42, 15);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "WS_EX";
-            // 
             // ZPool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1180, 631);
             this.Controls.Add(this.tabControl);
             this.Name = "ZPool";
             this.Text = "ZPool";
@@ -348,5 +370,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.RichTextBox rtbWS_EX;
         private System.Windows.Forms.RichTextBox rtbWS;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox tbMainWindow;
     }
 }

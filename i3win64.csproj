@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+    <StartupObject>i3win64.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
