@@ -34,6 +34,8 @@
             this.tabDebug = new System.Windows.Forms.TabPage();
             this.groupBoxWindows = new System.Windows.Forms.GroupBox();
             this.panelWindow = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbClassName = new System.Windows.Forms.TextBox();
             this.buttonBind = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -47,8 +49,6 @@
             this.groupBoxProcesses = new System.Windows.Forms.GroupBox();
             this.listBoxProcesses = new System.Windows.Forms.ListBox();
             this.buttonRefreshProcesses = new System.Windows.Forms.Button();
-            this.tbClassName = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabDebug.SuspendLayout();
             this.groupBoxWindows.SuspendLayout();
@@ -113,6 +113,24 @@
             this.panelWindow.Name = "panelWindow";
             this.panelWindow.Size = new System.Drawing.Size(376, 394);
             this.panelWindow.TabIndex = 1;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 122);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(69, 15);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Class Name";
+            // 
+            // tbClassName
+            // 
+            this.tbClassName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbClassName.Location = new System.Drawing.Point(103, 119);
+            this.tbClassName.Name = "tbClassName";
+            this.tbClassName.Size = new System.Drawing.Size(270, 23);
+            this.tbClassName.TabIndex = 9;
             // 
             // buttonBind
             // 
@@ -241,24 +259,6 @@
             this.buttonRefreshProcesses.UseVisualStyleBackColor = true;
             this.buttonRefreshProcesses.Click += new System.EventHandler(this.buttonRefreshProcesses_Click);
             // 
-            // tbClassName
-            // 
-            this.tbClassName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbClassName.Location = new System.Drawing.Point(103, 119);
-            this.tbClassName.Name = "tbClassName";
-            this.tbClassName.Size = new System.Drawing.Size(270, 23);
-            this.tbClassName.TabIndex = 9;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 122);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(69, 15);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Class Name";
-            // 
             // ZPool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -267,7 +267,9 @@
             this.Controls.Add(this.tabControl);
             this.Name = "ZPool";
             this.Text = "ZPool";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ZPool_FormClosing);
             this.Load += new System.EventHandler(this.ZPool_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ZPool_KeyPress);
             this.tabControl.ResumeLayout(false);
             this.tabDebug.ResumeLayout(false);
             this.groupBoxWindows.ResumeLayout(false);

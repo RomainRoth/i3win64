@@ -9,43 +9,121 @@ namespace i3win64
 {
     public class PInvokeDb
     {
-        // Re-assign window parent
+        /// <summary>
+        /// Attach a window to the current process.
+        /// </summary>
+        /// <param name="hWndChild">Window Handle</param>
+        /// <param name="hWndNewParent">Parent Component Handle</param>
+        /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
+        /// <summary>
+        /// Garbage for tests but might come in place later on. TODO : Use this instead of listing windows of threads of processes, might be faster
+        /// needs more testing
+        /// </summary>
+        /// <param name="enumProc"></param>
+        /// <param name="lParam"></param>
+        /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
         
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
-        
         public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 
+        /// <summary>
+        /// Needs more studying, might be what defines what is a window or not.
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="lpClassName"></param>
+        /// <param name="nMaxCount"></param>
+        /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
+        /// <summary>
+        /// Get Window title string size
+        /// </summary>
+        /// <param name="hWnd">Window Handle</param>
+        /// <returns>Window title string size for StringBuilder</returns>
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern int GetWindowTextLength(IntPtr hWnd);
 
+        /// <summary>
+        /// Get Window title
+        /// </summary>
+        /// <param name="hWnd">Window Handle</param>
+        /// <param name="lpString">StringBuilder</param>
+        /// <param name="nMaxCount">SizeOf -> GetWindowTextLength</param>
+        /// <returns></returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
+        /// <summary>
+        /// List all the windows of a thread
+        /// </summary>
+        /// <param name="dwThreadId">Thread identifier</param>
+        /// <param name="lpfn">Callback</param>
+        /// <param name="lParam">Just IntPtr.Zero, dunno</param>
+        /// <returns></returns>
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool EnumThreadWindows(uint dwThreadId, EnumThreadDelegate lpfn, IntPtr lParam);
         
         public delegate bool EnumThreadDelegate(IntPtr hwnd, IntPtr lParam);
 
+        /// <summary>
+        /// Garbage doesn't filter windows from components, useless TODO : get rid of it
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <returns></returns>
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsWindow(IntPtr hWnd);
 
+        /// <summary>
+        /// Moves window to desired position TODO: call on parent resize
+        /// </summary>
+        /// <param name="hWnd">Window Handle</param>
+        /// <param name="X">Abs</param>
+        /// <param name="Y">Ord</param>
+        /// <param name="nWidth">Width</param>
+        /// <param name="nHeight">Height</param>
+        /// <param name="bRepaint">Redraw</param>
+        /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
+        public static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
+        {
+            if (IntPtr.Size == 8)
+                return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+            else
+                return new IntPtr(SetWindowLong32(hWnd, nIndex, dwNewLong.ToInt32()));
+        }
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
+        private static extern int SetWindowLong32(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
+        private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
         [DllImport("user32.dll")]
-        static extern bool AdjustWindowRectEx(ref RECT lpRect, uint dwStyle,
-   bool bMenu, uint dwExStyle);
+        static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
+
+        public static uint GetWindowLongPtr(IntPtr hWnd, int nIndex)
+        {
+            if (IntPtr.Size == 8)
+                return GetWindowLongPtr64(hWnd, nIndex);
+            else
+                return GetWindowLong32(hWnd, nIndex);
+        }
+
+        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
+        private static extern uint GetWindowLong32(IntPtr hWnd, int nIndex);
+        
+        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
+        private static extern uint GetWindowLongPtr64(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
 
 
         [StructLayout(LayoutKind.Sequential)]
@@ -293,8 +371,13 @@ namespace i3win64
             WS_EX_WINDOWEDGE = 0x00000100
         }
 
+        [DllImport("user32.dll")]
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
+        [DllImport("user32.dll")]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
         [Flags()]
-        private enum WindowStyles : uint
+        public enum WindowStyles : uint
         {
             /// <summary>The window has a thin-line border.</summary>
             WS_BORDER = 0x800000,
@@ -373,6 +456,28 @@ namespace i3win64
 
             /// <summary>The window has a vertical scroll bar.</summary>
             WS_VSCROLL = 0x200000
+        }
+
+        public enum WindowLongFlags : int
+        {
+            GWL_EXSTYLE = -20,
+            GWLP_HINSTANCE = -6,
+            GWLP_HWNDPARENT = -8,
+            GWL_ID = -12,
+            GWL_STYLE = -16,
+            GWL_USERDATA = -21,
+            GWL_WNDPROC = -4,
+            DWLP_USER = 0x8,
+            DWLP_MSGRESULT = 0x0,
+            DWLP_DLGPROC = 0x4
+        }
+        public enum KeyModifier
+        {
+            None = 0,
+            Alt = 1,
+            Control = 2,
+            Shift = 4,
+            WinKey = 8
         }
         // Hook on window events
         /*[DllImport("user32.dll")]
