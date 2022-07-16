@@ -14,7 +14,6 @@ namespace i3win64
 {
     public partial class ZPool : Form
     {
-        ProcessRouter processRouter = new ProcessRouter();
         ZScreen zScreen = new ZScreen();
         Thread bgRunner = new Thread(() =>
         {
@@ -62,18 +61,48 @@ namespace i3win64
 
             zScreen.Show();
 
-            processRouter.WindowAttached += (s, e) =>
+            HWindowRouter.Instance.CreateWindow += (s, e) =>
             {
-                if(zScreen.panel1.InvokeRequired)
+                if (zScreen.InvokeRequired)
                 {
-                    Action safeBind = delegate { e.WindowHandle.AttachTo(zScreen.panel1.Handle); };
-                    zScreen.panel1.Invoke(safeBind);
+                    Action safeBind = delegate { zScreen.Controls.Add(new ZTile(e)); };
+                    zScreen.Invoke(safeBind);
                 }
                 else
                 {
-                    e.WindowHandle.AttachTo(zScreen.panel1.Handle);
+                    zScreen.Controls.Add(new ZTile(e));
                 }
+            };
 
+            HWindowRouter.Instance.CloseWindow += (s, e) =>
+            {
+                if (zScreen.InvokeRequired)
+                {
+                    Action safeBind = delegate 
+                    {
+                        for(int i=0; i<=zScreen.Controls.Count; i++)
+                        {
+                            ZTile zTile = (ZTile)zScreen.Controls[i];
+                            if(zTile.HWdn == e)
+                            {
+                                zScreen.Controls.Remove(zTile);
+                            }
+                        }
+                        //zScreen.Controls.Remove(zScreen.panel1); 
+                    };
+                    zScreen.Invoke(safeBind);
+                }
+                else
+                {
+                    for (int i = 0; i <= zScreen.Controls.Count; i++)
+                    {
+                        ZTile zTile = (ZTile)zScreen.Controls[i];
+                        if (zTile.HWdn == e)
+                        {
+                            zScreen.Controls.Remove(zTile);
+                        }
+                    }
+                }
             };
             
             bgRunner.Start();
@@ -81,7 +110,7 @@ namespace i3win64
 
         private void buttonBind_Click(object sender, EventArgs e)
         {
-            IntPtr hWnd = (IntPtr)listBoxWindows.SelectedItem;
+            /*IntPtr hWnd = (IntPtr)listBoxWindows.SelectedItem;
 
             hWnd.AttachTo(zScreen.panel1.Handle);
             hWnd.StripTitle();
@@ -91,7 +120,7 @@ namespace i3win64
             {
                 hWnd.MoveTo(0, 0, zScreen.panel1.Width, zScreen.panel1.Height, true);
             };
-            hWnd.MoveTo(0, 0, zScreen.panel1.Width, zScreen.panel1.Height, true);
+            hWnd.MoveTo(0, 0, zScreen.panel1.Width, zScreen.panel1.Height, true);*/
         }
 
         private void buttonRefreshProcesses_Click(object sender, EventArgs e)

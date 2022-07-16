@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace i3win64
 {
@@ -57,9 +58,19 @@ namespace i3win64
 
         public static IntPtr AttachTo(this IntPtr hWnd, IntPtr hWndParent)
         {
+            hWnd.StripTitle();
             SetParent(hWnd, hWndParent);
             return hWnd;
         }
+
+        public static IntPtr AttachTo(this IntPtr hWnd, Panel control)
+        {
+            SetParent(hWnd, control.Handle);
+            hWnd.StripTitle();
+            hWnd.MoveTo(0, 0, control.Width, control.Height, true);
+            return hWnd;
+        }
+
         public static IntPtr MoveTo(this IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint)
         {
             MoveWindow(hWnd, X, Y, nWidth, nHeight, bRepaint);
