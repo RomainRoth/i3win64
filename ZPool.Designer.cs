@@ -333,7 +333,6 @@
             this.Text = "ZPool";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ZPool_FormClosing);
             this.Load += new System.EventHandler(this.ZPool_Load);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ZPool_KeyPress);
             this.tabControl.ResumeLayout(false);
             this.tabDebug.ResumeLayout(false);
             this.groupBoxWindows.ResumeLayout(false);

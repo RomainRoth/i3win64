@@ -68,6 +68,10 @@ namespace i3win64
             SetParent(hWnd, control.Handle);
             hWnd.StripTitle();
             hWnd.MoveTo(0, 0, control.Width, control.Height, true);
+            control.SizeChanged += (e, s) =>
+            {
+                hWnd.MoveTo(0, 0, control.Width, control.Height, true);
+            };
             return hWnd;
         }
 

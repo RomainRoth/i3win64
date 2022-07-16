@@ -16,10 +16,13 @@ namespace i3win64
     internal class HWindowRouter
     {
         #region PInvokeImports
-        // Imports
+        // Listing windows
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
         private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+        // Finding which one is the focused window
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
         #endregion
 
         #region LocalVariables
@@ -34,6 +37,12 @@ namespace i3win64
         /// Set to false to exit the background thread
         /// </summary>
         public bool KeepAlive { get => keepAlive; set => keepAlive = value; }
+        // Last focused window
+        private IntPtr lastFocusedWindow = IntPtr.Zero;
+        /// <summary>
+        /// Returns last focused window
+        /// </summary>
+        public IntPtr LastFocusedWindow { get => lastFocusedWindow; set => lastFocusedWindow = value; }
         #endregion
 
         #region Events
@@ -41,21 +50,37 @@ namespace i3win64
         public virtual void OnCreateWindow(Object sender, IntPtr e) => CreateWindow?.Invoke(sender, e);
         public EventHandler<IntPtr>? CloseWindow;
         public virtual void OnCloseWindow(Object sender, IntPtr e) => CloseWindow?.Invoke(sender, e);
+        public EventHandler<Tuple<IntPtr, IntPtr>>? FocusChange;
+        public virtual void OnFocusChange(Object sender, Tuple<IntPtr, IntPtr> e) => FocusChange?.Invoke(sender, e);
         #endregion
 
         #region SingletonStructure
         // Singleton Structure
         private static readonly Lazy<HWindowRouter> instance = new Lazy<HWindowRouter>(() => new HWindowRouter());
         public static HWindowRouter Instance => instance.Value;
+
+        
+
         private HWindowRouter() { }
         #endregion
 
         #region Methods
         public void Run()
         {
+            // Focused Window
+            IntPtr focusedWindow = IntPtr.Zero;
+            
             // While thread is kept alive
             while(keepAlive)
             {
+                // Check for focus change
+                focusedWindow = GetForegroundWindow();
+                if (focusedWindow != LastFocusedWindow)
+                {
+                    OnFocusChange(this, new Tuple<IntPtr, IntPtr>(focusedWindow, LastFocusedWindow));
+                    LastFocusedWindow = focusedWindow;
+                }
+
                 // Drop dead windows from db
                 for (int i = windowDb.Count - 1; i >= 0; i--)
                 {

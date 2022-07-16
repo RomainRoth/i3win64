@@ -32,11 +32,49 @@ namespace i3win64
             if (m.Msg == 0x0312)
             {
                 Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
-                PInvokeDb.KeyModifier modifier = (PInvokeDb.KeyModifier)((int)m.LParam & 0xFFFF);
+                KM modifier = (KM)((int)m.LParam & 0xFFFF);
                 int id = m.WParam.ToInt32();
                 
-                if(key==Keys.F && modifier==PInvokeDb.KeyModifier.None)
-                    MessageBox.Show("Global shortcut test");
+                // ToDo : Update this to use settings instead of whatever
+                switch(modifier)
+                {
+                    // Moves the control
+                    case KM.Control:
+                        switch (key)
+                        {
+                            case Keys.Up:
+                                zScreen.MoveU(HWindowRouter.Instance.LastFocusedWindow);
+                                break;
+                            case Keys.Right:
+                                zScreen.MoveR(HWindowRouter.Instance.LastFocusedWindow);
+                                break;
+                            case Keys.Down:
+                                zScreen.MoveD(HWindowRouter.Instance.LastFocusedWindow);
+                                break;
+                            case Keys.Left:
+                                zScreen.MoveL(HWindowRouter.Instance.LastFocusedWindow);
+                                break;
+                        }
+                        break;
+                    // Resize the control
+                    case KM.Shift:
+                        switch(key)
+                        {
+                            case Keys.Up:
+                                zScreen.ShrinkH(HWindowRouter.Instance.LastFocusedWindow);
+                                break;
+                            case Keys.Right:
+                                zScreen.GrowW(HWindowRouter.Instance.LastFocusedWindow);
+                                break;
+                            case Keys.Down:
+                                zScreen.GrowH(HWindowRouter.Instance.LastFocusedWindow);
+                                break;
+                            case Keys.Left:
+                                zScreen.ShrinkW(HWindowRouter.Instance.LastFocusedWindow);
+                                break;
+                        }
+                        break;
+                }
             }
         }
 
@@ -47,20 +85,39 @@ namespace i3win64
             // .NET 6 wraps software in a dll, be sure to bind .exe to registry, not .dll
             // MessageBox.Show(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
-            /*PInvokeDb.RegisterHotKey(this.Handle, 1,
-                (int)(PInvokeDb.KeyModifier.WinKey | PInvokeDb.KeyModifier.Alt),
-                (int)Keys.F);*/
 
-            /*PInvokeDb.RegisterHotKey(this.Handle, 1,
-                (int)(PInvokeDb.KeyModifier.None),
-                (int)Keys.F);*/
-
+            // Ask system for global shortcuts
             PInvokeDb.RegisterHotKey(this.Handle, 1,
-                (int)(PInvokeDb.KeyModifier.Alt),
-                (int)Keys.Tab);
-
+                (int)KM.Shift,
+                (int)Keys.Up);
+            PInvokeDb.RegisterHotKey(this.Handle, 2,
+                (int)KM.Shift,
+                (int)Keys.Right);
+            PInvokeDb.RegisterHotKey(this.Handle, 3,
+                (int)KM.Shift,
+                (int)Keys.Down);
+            PInvokeDb.RegisterHotKey(this.Handle, 4,
+                (int)KM.Shift,
+                (int)Keys.Left);
+            PInvokeDb.RegisterHotKey(this.Handle, 5,
+                (int)KM.Control,
+                (int)Keys.Up);
+            PInvokeDb.RegisterHotKey(this.Handle, 6,
+                (int)KM.Control,
+                (int)Keys.Right);
+            PInvokeDb.RegisterHotKey(this.Handle, 7,
+                (int)KM.Control,
+                (int)Keys.Down);
+            PInvokeDb.RegisterHotKey(this.Handle, 8,
+                (int)KM.Control,
+                (int)Keys.Left);
             zScreen.Show();
 
+            HWindowRouter.Instance.FocusChange += (s, e) =>
+            {
+
+            };
+            
             HWindowRouter.Instance.CreateWindow += (s, e) =>
             {
                 if (zScreen.InvokeRequired)
@@ -80,27 +137,20 @@ namespace i3win64
                 {
                     Action safeBind = delegate 
                     {
-                        for(int i=0; i<=zScreen.Controls.Count; i++)
+                        ZTile? zTile = zScreen.FindZTile(e);
+                        if(zTile != null)
                         {
-                            ZTile zTile = (ZTile)zScreen.Controls[i];
-                            if(zTile.HWdn == e)
-                            {
-                                zScreen.Controls.Remove(zTile);
-                            }
+                            zScreen.Controls.Remove(zTile);
                         }
-                        //zScreen.Controls.Remove(zScreen.panel1); 
                     };
                     zScreen.Invoke(safeBind);
                 }
                 else
                 {
-                    for (int i = 0; i <= zScreen.Controls.Count; i++)
+                    ZTile? zTile = zScreen.FindZTile(e);
+                    if (zTile != null)
                     {
-                        ZTile zTile = (ZTile)zScreen.Controls[i];
-                        if (zTile.HWdn == e)
-                        {
-                            zScreen.Controls.Remove(zTile);
-                        }
+                        zScreen.Controls.Remove(zTile);
                     }
                 }
             };
@@ -191,15 +241,17 @@ namespace i3win64
             }
         }
 
-        private void ZPool_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-        }
-
         private void ZPool_FormClosing(object sender, FormClosingEventArgs e)
         {
             HWindowRouter.Instance.KeepAlive = false;
             PInvokeDb.UnregisterHotKey(this.Handle, 1);
+            PInvokeDb.UnregisterHotKey(this.Handle, 2);
+            PInvokeDb.UnregisterHotKey(this.Handle, 3);
+            PInvokeDb.UnregisterHotKey(this.Handle, 4);
+            PInvokeDb.UnregisterHotKey(this.Handle, 5);
+            PInvokeDb.UnregisterHotKey(this.Handle, 6);
+            PInvokeDb.UnregisterHotKey(this.Handle, 7);
+            PInvokeDb.UnregisterHotKey(this.Handle, 8);
         }
     }
 }
